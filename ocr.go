@@ -5,11 +5,18 @@ import (
 	"encoding/json"
 	"mime/multipart"
 	"net/http"
+	"os"
 )
 
 var (
 	ocrServerEndpoint = "http://10.20.40.14:8080/file"
 )
+
+func init() {
+	if v, ok := os.LookupEnv("OCR_SERVER_ENDPOINT"); ok {
+		ocrServerEndpoint = v
+	}
+}
 
 func ocr(data []byte) (string, error) {
 	buf := bytes.NewBuffer(nil)
