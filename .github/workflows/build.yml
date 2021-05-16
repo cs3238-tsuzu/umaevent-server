@@ -22,4 +22,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: cs3238-tsuzu/umaevent-server:latest
+          tags: ghcr.io/cs3238-tsuzu/umaevent-server:latest
