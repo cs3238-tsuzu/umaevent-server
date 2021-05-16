@@ -4,5 +4,4 @@
 ## Usage
 - `$EVENT_DATA_ENDPOINT` にイベントデータを返してくれるエンドポイントを指定
 - `$PORT` にポート番号指定(optional, default: 8080)
-
-## 
+- make run で実行
