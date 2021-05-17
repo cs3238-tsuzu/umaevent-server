@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"image/color"
 	"image/jpeg"
-	"log"
-	"math"
 	"sort"
 	"sync"
 
@@ -86,22 +84,31 @@ func (h *Handler) find() *UmaEvent {
 	wg.Wait()
 
 	sort.Slice(scores, func(i, j int) bool {
-		return scores[i].score < scores[j].score
+		return scores[i].score > scores[j].score
 	})
 
-	log.Printf("matched: %s(%d)", scores[0].event.Event, scores[0].score)
-	if scores[0].score >= 15 {
+	if scores[0].score <= h.getThreshold(scores[0].event) {
 		return nil
 	}
 
 	return scores[0].event
 }
 
+func (h *Handler) getThreshold(e *UmaEvent) int {
+	threshold := len([]rune(e.Event))
+
+	for i := range e.Choices {
+		threshold += len([]rune(e.Choices[i].Choice))
+	}
+
+	return threshold / 2
+}
+
 func (h *Handler) calcScore(event *UmaEvent) int {
 	score := levenshtein(event.Event, h.parsed.Title)
 
 	if len(event.Choices) < len(h.parsed.Choices) {
-		return math.MaxInt32
+		return 0
 	}
 
 	for i := range h.parsed.Choices {
@@ -145,7 +152,26 @@ func (h *Handler) prepare() (bool, error) {
 				return nil
 			}
 
-			choice1, err := ocr(h.images.Choices[i])
+			// newImg := image.NewGray(img.Bounds())
+
+			// for i := 0; i < img.Bounds().Dy(); i++ {
+			// 	for j := 0; j < img.Bounds().Dx(); j++ {
+			// 		newImg.Set(j, i, img.At(j, i))
+
+			// 		if newImg.GrayAt(j, i).Y > 200 {
+			// 			newImg.SetGray(j, i, color.Gray{Y: 255})
+			// 		}
+			// 	}
+			// }
+
+			// buf := bytes.NewBuffer(nil)
+			// if err := jpeg.Encode(buf, newImg, &jpeg.Options{
+			// 	Quality: 70,
+			// }); err != nil {
+			// 	return err
+			// }
+
+			choice1, err := ocr(h.images.Choices[i]) // ocr(buf.Bytes())
 			parsed.Choices[i] = choice1
 
 			return err

@@ -1,9 +1,7 @@
 package main
 
-import "math"
-
-func min(a, b int) int {
-	if a < b {
+func max(a, b int) int {
+	if a > b {
 		return a
 	}
 
@@ -18,7 +16,7 @@ func levenshtein(s1, s2 string) int {
 		dp[i] = make([]int, len(b)+1)
 
 		for j := range dp[i] {
-			dp[i][j] = math.MaxInt32
+			dp[i][j] = 0
 		}
 	}
 
@@ -26,13 +24,13 @@ func levenshtein(s1, s2 string) int {
 	for i := 0; i < len(a); i++ {
 		for j := 0; j < len(b); j++ {
 			if a[i] == b[j] {
-				dp[i+1][j+1] = min(dp[i+1][j+1], dp[i][j])
+				dp[i+1][j+1] = max(dp[i+1][j+1], dp[i][j]+1)
 			} else {
-				dp[i+1][j+1] = min(dp[i+1][j+1], dp[i][j]+1)
+				dp[i+1][j+1] = max(dp[i+1][j+1], dp[i][j])
 			}
 
-			dp[i][j+1] = min(dp[i][j+1], dp[i][j]+1)
-			dp[i+1][j] = min(dp[i+1][j], dp[i][j]+1)
+			dp[i][j+1] = max(dp[i][j+1], dp[i][j])
+			dp[i+1][j] = max(dp[i+1][j], dp[i][j])
 		}
 	}
 

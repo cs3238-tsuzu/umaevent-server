@@ -34,6 +34,8 @@ func main() {
 		panic(err)
 	}
 
+	dumpUmaEvents(events, "events.json")
+
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/upload", func(rw http.ResponseWriter, req *http.Request) {

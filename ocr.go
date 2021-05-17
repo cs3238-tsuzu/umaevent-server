@@ -6,6 +6,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
+	"strings"
 )
 
 var (
@@ -65,5 +66,8 @@ func ocr(data []byte) (string, error) {
 		return "", err
 	}
 
-	return result.Result, nil
+	res := strings.ReplaceAll(result.Result, " ", "")
+	res = strings.ReplaceAll(res, "　", "")
+
+	return res, nil
 }

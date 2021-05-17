@@ -4,22 +4,29 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"regexp"
 
 	"github.com/dop251/goja"
 )
 
-type UmaEvent struct {
-	Event     string `json:"e"`
-	Character string `json:"n"`
-	C         string `json:"c"`
-	L         string `json:"l,omitempty"`
-	A         string `json:"a,omitempty"`
-	K         string `json:"k"`
-	Choices   []struct {
-		Choice string `json:"n"`
-		Result string `json:"t"`
-	} `json:"choices"`
+type UmaEventChoice struct {
+	Choice string `json:"n"`
+	Result string `json:"t"`
 }
+
+type UmaEvent struct {
+	Event     string           `json:"e"`
+	Character string           `json:"n"`
+	C         string           `json:"c"`
+	L         string           `json:"l,omitempty"`
+	A         string           `json:"a,omitempty"`
+	K         string           `json:"k"`
+	Choices   []UmaEventChoice `json:"choices"`
+}
+
+var (
+	specificCondRegex = regexp.MustCompile(`(.*)\(.*[：:](.*)\)`)
+)
 
 func fetchUmaEvents() ([]UmaEvent, error) {
 	eventEndpoint := os.Getenv("EVENT_DATA_ENDPOINT")
@@ -56,4 +63,19 @@ func fetchUmaEvents() ([]UmaEvent, error) {
 	}
 
 	return results, nil
+}
+
+func dumpUmaEvents(events []UmaEvent, name string) error {
+	fp, err := os.Create(name)
+
+	if err != nil {
+		return err
+	}
+	defer fp.Close()
+
+	if err = json.NewEncoder(fp).Encode(events); err != nil {
+		return err
+	}
+
+	return nil
 }
