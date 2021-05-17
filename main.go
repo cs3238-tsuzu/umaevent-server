@@ -96,6 +96,7 @@ func main() {
 			log.Println(err)
 		}
 
+		ok := err == nil && event != nil
 		if event == nil {
 			event = &UmaEvent{}
 		}
@@ -108,7 +109,7 @@ func main() {
 		}
 
 		json.NewEncoder(rw).Encode(Result{
-			OK:        err == nil,
+			OK:        err == nil && ok,
 			EventName: event.Event,
 			Choices:   choices,
 		})
