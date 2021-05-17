@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"image/color"
 	"image/jpeg"
+	"log"
 	"sort"
 	"sync"
 
@@ -87,6 +88,10 @@ func (h *Handler) find() *UmaEvent {
 		return scores[i].score > scores[j].score
 	})
 
+	log.Println(h.parsed.Title, h.parsed.Choices)
+	log.Println(scores[0].event.Event, scores[0].event.Choices)
+
+	log.Printf("matched: %s(%d)", scores[0].event.Event, scores[0].score)
 	if scores[0].score <= h.getThreshold(scores[0].event) {
 		return nil
 	}
