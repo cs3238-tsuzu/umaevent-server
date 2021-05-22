@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
 var (
@@ -123,5 +124,11 @@ func main() {
 		addr = ":" + port
 	}
 
-	http.ListenAndServe(addr, mux)
+	server := &http.Server{
+		Addr:        addr,
+		Handler:     mux,
+		ReadTimeout: 5 * time.Second,
+	}
+
+	server.ListenAndServe()
 }
