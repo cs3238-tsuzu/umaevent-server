@@ -47,7 +47,8 @@ func main() {
 
 		mediaType, params, err := mime.ParseMediaType(req.Header.Get("Content-Type"))
 		if err != nil {
-			log.Fatal(err)
+			rw.WriteHeader(http.StatusBadRequest)
+			return
 		}
 		if !strings.HasPrefix(mediaType, "multipart/") {
 			rw.WriteHeader(http.StatusBadRequest)
@@ -94,6 +95,8 @@ func main() {
 
 		if err != nil {
 			log.Println(err)
+
+			return
 		}
 
 		ok := err == nil && event != nil
