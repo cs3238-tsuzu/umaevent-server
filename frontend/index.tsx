@@ -37,17 +37,17 @@ type BlobForDevice = {
 }
 
 type Choice = {
-	choice: string;
-	effect: string;
+    choice: string;
+    effect: string;
 }
 
 type Result = {
-	ok: boolean;
-	eventName: string;
-	choices:   Choice[];
+    ok: boolean;
+    eventName: string;
+    choices: Choice[];
 }
 
-type DeviceConfigurations = {[key: string]: DeviceConfiguration};
+type DeviceConfigurations = { [key: string]: DeviceConfiguration };
 
 const deviceConfigs: DeviceConfigurations = rawConfig;
 
@@ -58,7 +58,7 @@ function findConfig(width: number, height: number): DeviceConfiguration | undefi
             diff: Math.abs(config.size.height / config.size.width - height / width),
             config: config,
         }
-    }).sort((a, b)=> a.diff - b.diff);
+    }).sort((a, b) => a.diff - b.diff);
 
     if (!sorted.length || sorted[0].diff > 0.1) {
         return undefined;
@@ -97,7 +97,7 @@ async function getJpegFromBitmap(img: ImageBitmap, parent?: HTMLElement) {
     canvas.height = img.height;
     document.querySelector
     let ctx = canvas.getContext('bitmaprenderer');
-    if(ctx) {
+    if (ctx) {
         ctx.transferFromImageBitmap(img);
     } else {
         canvas.getContext('2d').drawImage(img, 0, 0);
@@ -122,9 +122,9 @@ async function photoHandler(blob: ImageBitmap) {
 
     const config = findConfig(all.width, all.height);
 
-    if (!config) 
+    if (!config)
         return;
-    
+
     const dom = {
         title: document.querySelector("#title"),
         choice1: document.querySelector("#choice1"),
@@ -144,7 +144,7 @@ async function photoHandler(blob: ImageBitmap) {
     const images = Object.fromEntries(entries) as BlobForDevice;
 
     const formData = new FormData();
-    
+
     for (const [name, image] of Object.entries(images)) {
         formData.append(name, image);
     }
@@ -156,12 +156,12 @@ async function photoHandler(blob: ImageBitmap) {
         }).then(res => res.json());
 
         return res;
-    } catch(e: any) {
+    } catch (e: any) {
         console.error(e);
     }
 }
 
-const entrypoint = async function() {
+const entrypoint = async function () {
     const constraints: MediaStreamConstraints = {
         audio: false,
         video: true,
@@ -171,7 +171,7 @@ const entrypoint = async function() {
     const track = stream.getVideoTracks()[0];
     const imageCapture = new ImageCapture(track);
 
-    const ResultTable: React.FC<{}> = function() {
+    const ResultTable: React.FC<{}> = function () {
         const [result, setResult] = React.useState<Result>(null);
 
         React.useEffect(() => {
@@ -207,7 +207,7 @@ const entrypoint = async function() {
     }
 
     ReactDOM.render(
-        <ResultTable/>,
+        <ResultTable />,
         document.querySelector("#table"),
     );
 
@@ -216,7 +216,7 @@ const entrypoint = async function() {
     video.playsInline = true;
     video.muted = true;
     video.autoplay = true;
-    
+
     document.querySelector("#video_wrapper")
         .appendChild(video);
 }
