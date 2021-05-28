@@ -39,6 +39,7 @@ func main() {
 
 	mux := http.NewServeMux()
 
+	mux.Handle("/", http.FileServer(http.FS(staticFS)))
 	mux.HandleFunc("/upload", func(rw http.ResponseWriter, req *http.Request) {
 		if req.Method != http.MethodPost {
 			rw.WriteHeader(http.StatusNotImplemented)

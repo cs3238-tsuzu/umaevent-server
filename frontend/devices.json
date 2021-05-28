@@ -1,0 +1,66 @@
+{
+    "iPhone 12 mini": {
+        "size": {
+            "width": 1125,
+            "height": 2436
+        },
+        "ranges": {
+            "title": {
+                "x": 170,
+                "y": 533,
+                "width": 550,
+                "height": 48
+            },
+            "choice1": {
+                "x": 125,
+                "y": 1164,
+                "width": 920,
+                "height": 48
+            },
+            "choice2": {
+                "x": 125,
+                "y": 1340,
+                "width": 920,
+                "height": 48
+            },
+            "choice3": {
+                "x": 125,
+                "y": 1516,
+                "width": 920,
+                "height": 48
+            }
+        }
+    },
+    "iPad Pro (12.9-inch) (3rd generation)": {
+        "size": {
+            "width": 2048,
+            "height": 2732
+        },
+        "ranges": {
+            "title": {
+                "x": 240,
+                "y": 524,
+                "width": 860,
+                "height": 60
+            },
+            "choice1": {
+                "x": 427,
+                "y": 1240,
+                "width": 1250,
+                "height": 85
+            },
+            "choice2": {
+                "x": 427,
+                "y": 1480,
+                "width": 1250,
+                "height": 85
+            },
+            "choice3": {
+                "x": 427,
+                "y": 1720,
+                "width": 1250,
+                "height": 85
+            }
+        }
+    }
+}
