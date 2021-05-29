@@ -110,6 +110,8 @@ async function getJpegFromBitmap(img: ImageBitmap, parent?: HTMLElement) {
         canvas.toBlob((blob) => {
             if (!blob) {
                 reject("failed to encode the image as jpeg");
+
+                return;
             }
 
             resolve(blob);
